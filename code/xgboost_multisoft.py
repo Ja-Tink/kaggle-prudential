@@ -14,7 +14,7 @@ train = pd.read_csv(config['train'])
 test = pd.read_csv(config['test'])
 
 # combine train and test
-all_data = train.append(test)
+all_data = pd.concat([train, test]) #train.append(test)
 
 # create any new variables    
 all_data['Product_Info_2_char'] = all_data.Product_Info_2.str[0]
@@ -57,16 +57,16 @@ train_ohd['pr7'] = [0]*train_ohd.shape[0]
 train_ohd['pr8'] = [0]*train_ohd.shape[0]
 
 l = train_ohd.shape[0]
-ind_list = [(range(0,l/10), filter(lambda x: x not in range(0,l/10), range(0,l))), 
-            (range(l/10,l/10*2), filter(lambda x: x not in range(l/10,l/10*2), range(0,l))),
-            (range(l/10*2,l/10*3), filter(lambda x: x not in range(l/10*2,l/10*3), range(0,l))),
-            (range(l/10*3,l/10*4), filter(lambda x: x not in range(l/10*3,l/10*4), range(0,l))),
-            (range(l/10*4,l/10*5), filter(lambda x: x not in range(l/10*4,l/10*5), range(0,l))),
-            (range(l/10*5,l/10*6), filter(lambda x: x not in range(l/10*5,l/10*6), range(0,l))),
-            (range(l/10*6,l/10*7), filter(lambda x: x not in range(l/10*6,l/10*7), range(0,l))),
-            (range(l/10*7,l/10*8), filter(lambda x: x not in range(l/10*7,l/10*8), range(0,l))),
-            (range(l/10*8,l/10*9), filter(lambda x: x not in range(l/10*8,l/10*9), range(0,l))),
-            (range(l/10*9,l), filter(lambda x: x not in range(l/10*9,l), range(0,l)))]
+ind_list = [(list(range(0,l//10)), [x for x in range(0,l) if x not in list(range(0,l//10))]), 
+            (list(range(l//10,l//10*2)), [x for x in range(0,l) if x not in list(range(l//10,l//10*2))]),
+            (list(range(l//10*2,l//10*3)), [x for x in range(0,l) if x not in list(range(l//10*2,l//10*3))]),
+            (list(range(l//10*3,l//10*4)), [x for x in range(0,l) if x not in list(range(l//10*3,l//10*4))]),
+            (list(range(l//10*4,l//10*5)), [x for x in range(0,l) if x not in list(range(l//10*4,l//10*5))]),
+            (list(range(l//10*5,l//10*6)), [x for x in range(0,l) if x not in list(range(l//10*5,l//10*6))]),
+            (list(range(l//10*6,l//10*7)), [x for x in range(0,l) if x not in list(range(l//10*6,l//10*7))]),
+            (list(range(l//10*7,l//10*8)), [x for x in range(0,l) if x not in list(range(l//10*7,l//10*8))]),
+            (list(range(l//10*8,l//10*9)), [x for x in range(0,l) if x not in list(range(l//10*8,l//10*9))]),
+            (list(range(l//10*9,l)), [x for x in range(0,l) if x not in list(range(l//10*9,l))])]
 
 
 param = {'max_depth' : 4, 
@@ -97,6 +97,10 @@ for j in range(10):
     for k in range(1,9):
         train_ohd['pr%s' % (k)].iloc[X_2] = bst.predict(dval).T[k-1]
 
+
+import os
+#ensure directory exists
+os.makedirs(os.path.dirname(config['train_p1']), exist_ok=True)
 train_ohd.to_csv(config['train_p1'],index=0)
 
 

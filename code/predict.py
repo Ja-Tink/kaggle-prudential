@@ -62,10 +62,11 @@ lr.fit(train_ohd[features],train_ohd['Response'])
 train_preds = lr.predict(train_ohd[features])
 test_preds = lr.predict(test_ohd[features])
 
-def digit0((x1,x2,x3,x4,x5,x6,x7),sr):
+def digit0(xxx_todo_changeme,sr):
     '''
     Digitize test list 
     '''    
+    (x1,x2,x3,x4,x5,x6,x7) = xxx_todo_changeme
     res = []
     for y in list(sr):
         if y < x1:
@@ -85,10 +86,11 @@ def digit0((x1,x2,x3,x4,x5,x6,x7),sr):
         else: res.append(8)
     return res  
 
-def digit((x1,x2,x3,x4,x5,x6,x7)):
+def digit(xxx_todo_changeme1):
     '''
     Digitize train list
     '''
+    (x1,x2,x3,x4,x5,x6,x7) = xxx_todo_changeme1
     res = []
     for y in list(train_preds):
         if y < x1:
@@ -108,10 +110,11 @@ def digit((x1,x2,x3,x4,x5,x6,x7)):
         else: res.append(8)
     return res    
 
-def train_offset((x1,x2,x3,x4,x5,x6,x7)):
+def train_offset(xxx_todo_changeme2):
     '''
     Finding offsets
     '''
+    (x1,x2,x3,x4,x5,x6,x7) = xxx_todo_changeme2
     res = digit((x1,x2,x3,x4,x5,x6,x7))    
     return -quadratic_weighted_kappa(train_ohd['Response'], res)        
     

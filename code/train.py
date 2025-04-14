@@ -9,17 +9,17 @@ import os
 
 if __name__ == '__main__':
     
-    execfile('logRegression.py')
-    print 'Logistic Regression is done'
+    exec(compile(open('logRegression.py', "rb").read(), 'logRegression.py', 'exec'))
+    print('Logistic Regression is done')
 
-    execfile('randomForest.py')
-    print 'Random Forest Classifier is done'
+    exec(compile(open('randomForest.py', "rb").read(), 'randomForest.py', 'exec'))
+    print('Random Forest Classifier is done')
 
-    execfile('xgboost_binary.py')
-    print 'Xgboost binary is done'
+    exec(compile(open('xgboost_binary.py', "rb").read(), 'xgboost_binary.py', 'exec'))
+    print('Xgboost binary is done')
 
-    execfile('xgboost_multisoft.py')
-    print 'Xgboost multisoft is done'
+    exec(compile(open('xgboost_multisoft.py', "rb").read(), 'xgboost_multisoft.py', 'exec'))
+    print('Xgboost multisoft is done')
     
 
     
