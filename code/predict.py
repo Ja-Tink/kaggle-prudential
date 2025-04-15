@@ -116,7 +116,7 @@ def train_offset(xxx_todo_changeme2):
     '''
     (x1,x2,x3,x4,x5,x6,x7) = xxx_todo_changeme2
     res = digit((x1,x2,x3,x4,x5,x6,x7))    
-    return cohen_kappa_score(train_ohd["Response"], res, weights = "quadratic")#return -quadratic_weighted_kappa(train_ohd['Response'], res)        
+    return -cohen_kappa_score(train_ohd["Response"], res, weights = "quadratic")#return -quadratic_weighted_kappa(train_ohd['Response'], res)        
     
 x0 = (1.5,2.9,3.1,4.5,5.5,6.1,7.1)    
 offsets = fmin_powell(train_offset, x0, disp = True)
