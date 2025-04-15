@@ -6,7 +6,7 @@ Created on Thu Jan 14 11:06:52 2016
 """
 
 import pandas as pd 
-from ml_metrics import quadratic_weighted_kappa
+from sklearn.metrics import cohen_kappa_score
 from scipy.optimize import fmin_powell
 from sklearn import linear_model
 import json
@@ -54,8 +54,8 @@ for j in range(9,14):
     test_ohd['p%s' % (j)] = test_ohd.apply(lambda x: a0[0]*x['lr%s' % (j)] + a0[1]*x['rf%s' % (j)] + a0[2]*x['xgb%s' %(j)],1)
    
 columns_to_drop = ['Id', 'Response', 'MedicaliHistoryi10','MedicaliHistoryi24']
-features = list(train_ohd.drop(columns_to_drop,1).columns[:129]) + ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'] 
-features = list(train_ohd.drop(columns_to_drop,1).columns[:129]) + ['xgb1','xgb2','xgb3','xgb4','xgb5','xgb6','xgb7','xgb8','xgb9','xgb10','xgb11','xgb12','xgb13'] 
+features = list(train_ohd.drop(columns_to_drop, axis=1).columns[:129]) + ['p1','p2','p3','p4','p5','p6','p7','p8','p9','p10','p11','p12','p13'] 
+features = list(train_ohd.drop(columns_to_drop, axis=1).columns[:129]) + ['xgb1','xgb2','xgb3','xgb4','xgb5','xgb6','xgb7','xgb8','xgb9','xgb10','xgb11','xgb12','xgb13'] 
 
 lr = linear_model.LinearRegression()
 lr.fit(train_ohd[features],train_ohd['Response'])
@@ -116,11 +116,12 @@ def train_offset(xxx_todo_changeme2):
     '''
     (x1,x2,x3,x4,x5,x6,x7) = xxx_todo_changeme2
     res = digit((x1,x2,x3,x4,x5,x6,x7))    
-    return -quadratic_weighted_kappa(train_ohd['Response'], res)        
+    return cohen_kappa_score(train_ohd["Response"], res, weights = "quadratic")#return -quadratic_weighted_kappa(train_ohd['Response'], res)        
     
 x0 = (1.5,2.9,3.1,4.5,5.5,6.1,7.1)    
 offsets = fmin_powell(train_offset, x0, disp = True)
 final_test_preds = digit0(offsets,test_preds)
 preds_out = pd.DataFrame({"Id": test_ohd['Id'].values, "Response": final_test_preds})
+print(preds_out.shape)
 preds_out.to_csv(config['submission'], index=False)
-preds_out.to_csv('/media/newhd/Prudential/main/submissions/submission.csv', index=False)
+#preds_out.to_csv('/media/newhd/Prudential/main/submissions/submission.csv', index=False)
